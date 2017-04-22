@@ -2,7 +2,7 @@ var config = require('./config');
 var express = require('express');
 var sio		= require('socket.io');
 var cookieParser = require('cookie-parser');
-var app =global.APP =express();
+var app = global.APP = express();
 
 
 

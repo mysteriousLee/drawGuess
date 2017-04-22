@@ -2,24 +2,24 @@ class Room{
     constructor({token,roomId}){
         this.token = token;
         this.roomId = roomId;
-        this.passwd ='';
-        this.connectPool =[];
-        this.historyData =[];
+        this.passwd = '';
+        this.connectPool = [];
+        this.historyData = [];
     };
 }
-exports.Room =Room;
+exports.Room = Room;
 
 
 function stdRes(errmsg='ok',errcode=0,errorObj={}){
-    errorObj.errmsg =errmsg;
-    errorObj.errcode =errcode;
+    errorObj.errmsg = errmsg;
+    errorObj.errcode = errcode;
     return JSON.stringify(errorObj)
 }
 exports.stdRes =stdRes;
 
 function createToken(){
-    var chars ="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    var token ='';
+    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    var token = '';
     function randomChar() {
         return chars.charAt(Math.floor(Math.random() * chars.length));
     }
@@ -34,4 +34,4 @@ function createToken(){
     }
     return token;
 }
-exports.createToken =createToken;
+exports.createToken = createToken;

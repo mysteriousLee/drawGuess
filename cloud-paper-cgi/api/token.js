@@ -6,9 +6,9 @@ var fs = require('fs');
 
 // 创建token、创建房间
 var create = function(req, res) {
-	var token =createToken();
+	var token = createToken();
     global.TOKENS.push(token);
-    if(req.params.passwd) global.TOKEN2PASSWD[token] =req.params.passwd;
+    if(req.params.passwd) global.TOKEN2PASSWD[token] = req.params.passwd;
     console.log(token)
     res.cookie('token',token);
     res.send(stdRes('ok',0,{
@@ -24,11 +24,11 @@ var create = function(req, res) {
         // 销毁申请的token
         global.TOKENS.splice(global.TOKENS.indexOf(token),1);
         // 创建房间
-		var room =new Room({
+		var room = new Room({
             token,
             roomId:global.ROOMS_ID++
         });
-        global.ROOMS[token] =room;
+        global.ROOMS[token] = room;
         // 添加连接，绑定事件
         room.connectPool.push(socket);
         socket.on('message', function() {
