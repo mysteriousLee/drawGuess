@@ -1,3 +1,4 @@
+import stdRes from '../stdRes.js'
 function createToken(){
     let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let token = '';
@@ -18,12 +19,12 @@ function createToken(){
 
 let create = (req, res) => {
     let token = createToken();
-    console.log(token);
-    res.cookie('token',token);
+    global.TOKENS.push(token);
+    // res.cookie('token',token);
     if(token === '') {
-        res.json({"errcode":-1,"errmsg":"error"});
+        res.json(stdRes('error',-1,{}));
     } else {
-        res.json({"errcode":0,"errmsg":"success","token":token});
+        res.json(stdRes('success',0,{token:token}));
     }
 };
 export {create};

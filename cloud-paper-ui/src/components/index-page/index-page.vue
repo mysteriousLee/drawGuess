@@ -65,18 +65,21 @@
         })
       },
       createRoom () {
-        let url = serverPath + '/token/create';
+        // let url = serverPath + '/token/create';
+        let url = 'http://localhost:8000/token/create';
         this.changeId('owner');
         axios.get(url, {
           withCredentials: true
-        }).then((res, req) => {
+        }).then((res) => {
+          console.log(res.data);
           res = res.data;
           if (res.errcode === 0) {
+            console.log('lalala');
             this.changeToken(res.token);
-            this.$router.push({path: '/show-page'})
-          } else {
-            console.log('error');
-          }
+            this.$router.push({path: '/show-page'});
+          } 
+        }).catch((error) => {
+            console.log(error.config);
         })
       },
       titleShadow (event) {
