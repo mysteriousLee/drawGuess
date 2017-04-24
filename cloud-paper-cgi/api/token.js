@@ -16,33 +16,33 @@ var create = function(req, res) {
 	}));
     return;
 
-    // 监听使用此token的第一位连接着
-    // 针对房主，创建房间
-  //   newRoom.nsp = IO.of('/' + token);
+    //监听使用此token的第一位连接着
+    //针对房主，创建房间
+ //    newRoom.nsp = IO.of('/' + token);
 
-  //   newRoom.nsp.once('connection', function(socket){
-  //       // 销毁申请的token
-  //       global.TOKENS.splice(global.TOKENS.indexOf(token),1);
-  //       // 创建房间
-		// var room = new Room({
-  //           token,
-  //           roomId:global.ROOMS_ID++
-  //       });
-  //       global.ROOMS[token] = room;
-  //       // 添加连接，绑定事件
-  //       room.connectPool.push(socket);
-  //       socket.on('message', function() {
-  //       	for(let link of room.connectPool.slice(1)){
-  //               link.emit('message', ...arguments);
-		// 	};
-  //       });
-  //   });
+ //    newRoom.nsp.once('connection', function(socket){
+ //        // 销毁申请的token
+ //        global.TOKENS.splice(global.TOKENS.indexOf(token),1);
+ //        // 创建房间
+	// 	var room = new Room({
+ //            token,
+ //            roomId:global.ROOMS_ID++
+ //        });
+ //        global.ROOMS[token] = room;
+ //        // 添加连接，绑定事件
+ //        room.connectPool.push(socket);
+ //        socket.on('message', function() {
+ //        	for(let link of room.connectPool.slice(1)){
+ //                link.emit('message', ...arguments);
+	// 		};
+ //        });
+ //    });
 
-  //   ROOMS.push(newRoom);
-  //   if(global.TOKENS.indexOf(token)!==-1){//使用已申请的Token
+ //    ROOMS.push(newRoom);
+ //    if(global.TOKENS.indexOf(token)!==-1){//使用已申请的Token
 
-  //   };
-  //   return;
+ //    };
+ //    return;
 
 
 

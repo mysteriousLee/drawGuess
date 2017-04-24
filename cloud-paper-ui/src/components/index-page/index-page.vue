@@ -38,8 +38,10 @@
       }
     },
     mounted () {
-      let url = serverPath + '/websocket/getrooms';
+      //let url = serverPath + '/websocket/getrooms';
+      let url = 'http://localhost:8000' + '/websocket/getrooms';
       axios.get(url,{withCredentials:true}).then((res, req) => {
+        console.log(res.data);
         res = res.data;
         if (res.errcode === 0) {
           this.roomList = res.rooms;
@@ -54,9 +56,11 @@
         this.$store.commit(type.CHANGE_TOKEN, newValue);
       },
       enterRoom (token) {
-        let url = serverPath + '/websocket/connect/' + token;
+        //let url = serverPath + '/websocket/connect/' + token;
+        let url = 'http://localhost:8000' + '/websocket/connect/' + token;
         this.changeId('host');
         axios.get(url,{withCredentials:true}).then((res, req) => {
+          console.log(res.data);
           if (res.data.errcode === 0) {
             this.$router.push({path: '/show-page'})
           } else {
@@ -65,7 +69,7 @@
         })
       },
       createRoom () {
-        // let url = serverPath + '/token/create';
+        //let url = serverPath + '/token/create';
         let url = 'http://localhost:8000/token/create';
         this.changeId('owner');
         axios.get(url, {

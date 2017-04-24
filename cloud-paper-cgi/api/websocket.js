@@ -41,17 +41,17 @@ exports.getRooms = function(req, res) {
     return;
 
 
-	var room;
-	for(var i = 0;i < ROOMS.length;i++) {
-		room =  {
-			id: ROOMS[i].id,
-			token: ROOMS[i].token
-		}
-		rooms.push(room);
-	}
-	console.log("rooms:" + rooms);
-	// 返回
-	res.send(rooms);
+	// var room;
+	// for(var i = 0;i < ROOMS.length;i++) {
+	// 	room =  {
+	// 		id: ROOMS[i].id,
+	// 		token: ROOMS[i].token
+	// 	}
+	// 	rooms.push(room);
+	// }
+	// console.log("rooms:" + rooms);
+	// // 返回
+	// res.send(rooms);
 
 };
 

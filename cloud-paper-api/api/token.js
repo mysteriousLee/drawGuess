@@ -1,4 +1,6 @@
 import stdRes from '../stdRes.js'
+import cookie from 'cookie'
+import judgeToken from '../judgeToken.js'
 function createToken(){
     let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let token = '';
@@ -20,11 +22,14 @@ function createToken(){
 let create = (req, res) => {
     let token = createToken();
     global.TOKENS.push(token);
-    // res.cookie('token',token);
-    if(token === '') {
-        res.json(stdRes('error',-1,{}));
-    } else {
-        res.json(stdRes('success',0,{token:token}));
-    }
+    res.cookie('token',token);
+    let room = {
+                roomId : global.ROOMS_ID++,
+                token : token,
+                connectPool : [],
+                historyData : []
+    };
+    global.ROOMS.push(room);
+    res.json(stdRes('success',0,{token:token}));
 };
 export default create;
