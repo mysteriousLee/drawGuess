@@ -27,4 +27,4 @@ let create = (req, res) => {
         res.json(stdRes('success',0,{token:token}));
     }
 };
-export {create};
+export default create;
