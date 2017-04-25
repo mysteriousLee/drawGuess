@@ -94,7 +94,8 @@ global.IO.on('connection', function(socket){
         // 添加连接，绑定事件
         room.connectPool.push(socket);
         socket.on('message', function() {
-            console.log('emit event message, token is '+token);
+            console.log('emit event message, token is ' + token);
+            console.log(arguments);
             room.historyData.push(arguments);
             for(let link of room.connectPool.slice(1)){
                 link.emit('message', ...arguments);
@@ -122,6 +123,7 @@ global.IO.on('connection', function(socket){
     global.ROOMS[token].connectPool.push(socket);
     // 将所有历史数据推过去
     global.ROOMS[token].historyData.forEach(function(data){
+        console.log(...data);
         socket.emit('message',...data);
     });
 });

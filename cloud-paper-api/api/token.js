@@ -1,6 +1,7 @@
 import stdRes from '../stdRes.js'
 import cookie from 'cookie'
 import judgeToken from '../judgeToken.js'
+import connectWS from './connectWS.js'
 function createToken(){
     let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let token = '';
@@ -23,25 +24,16 @@ let create = (req, res) => {
     let token = createToken();
     global.TOKENS.push(token);
     res.cookie('token',token);
+    res.json(stdRes('success',0,{token:token}));
     let room = {
-                roomId : global.ROOMS_ID++,
+                roomId : global.ROOMS_ID,
                 token : token,
                 connectPool : [],
                 historyData : []
     };
-    res.json(stdRes('success',0,{token:token}));
-    global.IO.on('connection', (socket) => {
-        console.log('create room');
-        room.connectPool.push(socket);
-        socket.on('message', () => {
-                console.log('emit event message, token is ' + token);
-                room.historyData.push(arguments);
-                for(let link of room.connectPool.slice(1)){
-                    link.emit('message', ...arguments);
-                };
-        });
-    });
+    global.ROOMS_ID++;
     global.ROOMS.push(room);
+    connectWS(token);
     return;
 };
 export default create;

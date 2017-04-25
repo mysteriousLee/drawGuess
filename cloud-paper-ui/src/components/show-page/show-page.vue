@@ -221,11 +221,12 @@
       // 向服务器发送数据
       sendDrawEvent2ServerUseSocket () {
         this.socket.emit('message',...arguments);
+        console.log(...arguments);
       },
       // 判断房主还是宾客
       justify () {
-        let url = serverPath;
-        //let url = "http://localhost:8000";
+        //let url = serverPath;
+        let url = "http://localhost:8000";
         let socket = io.connect(url);
         this.socket = socket;
         if (this.id === 'owner') {
@@ -233,7 +234,8 @@
           this.$refs['cursorEraser'].style.display = 'none';
           this.$refs['cursorPencil'].style.display = 'none';
           let that = this;
-          socket.on('message', function (data) {
+          socket.on('message', (data) => {
+            console.log(data);
             that.$refs.paperReader.dispatch(data);
           })
         }
