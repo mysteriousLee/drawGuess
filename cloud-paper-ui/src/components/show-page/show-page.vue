@@ -221,7 +221,6 @@
       // 向服务器发送数据
       sendDrawEvent2ServerUseSocket () {
         this.socket.emit('message',...arguments);
-        console.log(...arguments);
       },
       // 判断房主还是宾客
       justify () {
@@ -235,7 +234,6 @@
           this.$refs['cursorPencil'].style.display = 'none';
           let that = this;
           socket.on('message', (data) => {
-            console.log(data);
             that.$refs.paperReader.dispatch(data);
           })
         }

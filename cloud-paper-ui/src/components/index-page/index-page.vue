@@ -16,7 +16,7 @@
             <img class="room" src="./room.png">
           </div>
           <div class="roomlist__elem--title">
-            <p class="room__title">房间{{ room.id + 1 }}</p>
+            <p class="room__title">房间</p>
           </div>
           <div class="roomlist__elem--lock">
             <img class="lock" src="./right.png">

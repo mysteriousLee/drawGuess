@@ -4,8 +4,7 @@ let getRooms = (req, res) => {
 	let result = {rooms:[]};
 	for(let token in global.ROOMS){
         result.rooms.push({
-        	id    :global.ROOMS[token].roomId,
-            token : global.ROOMS[token].token
+            token : token
         });
     };
     res.json(stdRes('ok',0,result));

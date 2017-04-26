@@ -26,13 +26,10 @@ let create = (req, res) => {
     res.cookie('token',token);
     res.json(stdRes('success',0,{token:token}));
     let room = {
-                roomId : global.ROOMS_ID,
-                token : token,
                 connectPool : [],
                 historyData : []
     };
-    global.ROOMS_ID++;
-    global.ROOMS.push(room);
+    global.ROOMS[token] = room;
     connectWS(token);
     return;
 };
