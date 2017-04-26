@@ -1,9 +1,10 @@
 import stdRes from '../stdRes.js'
 //获取房间列表
 let getRooms = (req, res) => {
-	let result = {rooms:[]};
+	let result = {rooms:[]},roomId = 1;
 	for(let token in global.ROOMS){
         result.rooms.push({
+        	id : roomId++,
             token : token
         });
     };

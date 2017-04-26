@@ -26,11 +26,12 @@ let create = (req, res) => {
     res.cookie('token',token);
     res.json(stdRes('success',0,{token:token}));
     let room = {
+                id : ROOM_ID++,
                 connectPool : [],
                 historyData : []
     };
     global.ROOMS[token] = room;
-    connectWS(token);
+    connectWS();
     return;
 };
 export default create;

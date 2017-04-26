@@ -11,7 +11,8 @@ let server = app.listen(8000, () => {
 });
 
 global.IO = require('socket.io')(server);
-
+//全局变量 房间序号
+global.ROOM_ID = 1;
 // 全局变量 房间信息
 global.ROOMS = [];
 // 全局变量 房间token

@@ -11,7 +11,7 @@ let connect = (req, res) => {
 	// 通过
     res.cookie('token',token);
     res.json(stdRes('token有效，开始建立连接',0,{}));
-    connectWS(token);
+    connectWS();
     return;
 };
 
