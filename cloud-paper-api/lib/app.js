@@ -6,8 +6,8 @@ import router from '../api_router'
 
 
 let app = Express();
-let server = app.listen(8000, () => {
-    console.log('Server listening at http://localhost:8000');
+let server = app.listen(4000, () => {
+    console.log('Server listening at http://localhost:4000');
 });
 
 global.IO = require('socket.io')(server);
@@ -18,7 +18,7 @@ global.ROOMS = [];
 // 全局变量 房间token
 global.TOKENS = [];
 // 当 http server 接收到 websocket 时就将请求转给 socket.io 处理
-
+global.DATA = {};
 
 app.use(cookieParser());
 app.use((req, res, next) => {
