@@ -61,11 +61,15 @@
         </aside>
       </section>
     </main>
+    <footer class="footer">
+      
+    </footer>
   </div>
 </template>
 <script>
   import { mapState } from 'vuex'
   import axios from 'axios'
+  import * as type from '@/store/mutation-types'
   import PaperWritter from '../paper/paper-writter.vue';
   import PaperReader from '../paper/paper-reader.vue';
   import serverPath from '@/server-path';
@@ -73,8 +77,6 @@
     name: 'show-page',
     data () {
       return {
-        // sendMessage: [],
-        // getMessage: [],
         socket: '',
         reader: '',
         pencilShow: false,
@@ -96,6 +98,8 @@
             clearInterval(time);
             this.justify();
             this.initColorBoard();
+            //console.log(this.question);
+            //console.log(1111);
           }
         }, 200)
       })
@@ -571,6 +575,11 @@
           }
         }
       }
+    }
+    .footer{
+      height: 50px;
+      width: 100%;
+      background-color: red;
     }
   }
 </style>
