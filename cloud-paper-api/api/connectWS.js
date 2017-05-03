@@ -7,9 +7,9 @@ let connectWS = () => {
 			// 销毁申请的token
 			global.TOKENS.splice(global.TOKENS.indexOf(token),1);
 	        console.log('create room');
-	        room.connectPool.push(socket);
+	        //room.connectPool.push(socket);
 	        socket.on('message', (data) => {
-	                console.log('emit event message, token is ' + token);
+	                //console.log('emit event message, token is ' + token);
 	                room.historyData.push(data);
 	                for(let link of room.connectPool.slice(1)){
 	                    link.emit('message',data);
@@ -17,15 +17,18 @@ let connectWS = () => {
 	        });
 		} else {
 	        // 观众连接
-		    console.log('add connect pool ' + token);
+		    //console.log('add connect pool ' + token);
 		    room.connectPool.push(socket);
 		    // 将所有历史数据推过去
-		    console.log(room.historyData.length);
+		    //console.log(room.historyData.length);
 		    if(room.historyData.length !== 0) {
 		    	room.historyData.forEach((data) => {
 			        socket.emit('message',data);
-			    });
+			    }); 
 		    }
+		    socket.on('checkmsg', (data) => {
+	        		console.log(data);
+	        });
 		}
 	 });
 }

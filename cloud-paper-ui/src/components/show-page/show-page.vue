@@ -62,7 +62,15 @@
       </section>
     </main>
     <footer class="footer">
-      
+      <div class="ownerSub" v-if="this.id==='owner'">
+        <span v-text="ownerData"></span>
+        <input type="button" name="" value="下一题" v-on:click="nextSub">
+      </div>
+      <div class="hostSub" v-else>
+        <span v-text="hostData"></span>
+        <input type="text" placeholder="请输入答案" v-model="answer">
+        <input type="button" name="" value="发送" v-on:click="checkAns">
+      </div>
     </footer>
   </div>
 </template>
@@ -87,10 +95,15 @@
         pencilSize: 4,
         eraserSize: 4,
         drawType: 'pen',
-        drawColor: null
+        drawColor: null,
+        roomId: 0,
+        ownerData: '',
+        hostData: '',
+        answer: ''
       }
     },
     mounted () {
+      this.roomId = this.$route.query.id;
       this.$nextTick(() => {
         // 等待vuex数据更新
         let time = setInterval(() => {
@@ -98,8 +111,6 @@
             clearInterval(time);
             this.justify();
             this.initColorBoard();
-            //console.log(this.question);
-            //console.log(1111);
           }
         }, 200)
       })
@@ -233,7 +244,10 @@
         let socket = io.connect(url);
         this.socket = socket;
         if (this.id === 'owner') {
+          //如果是房主就申请题目放到global.data里并且返回题目
+          this.setSubject();
         } else if (this.id === 'host') {
+          this.getSubject();
           this.$refs['cursorEraser'].style.display = 'none';
           this.$refs['cursorPencil'].style.display = 'none';
           let that = this;
@@ -241,6 +255,50 @@
             that.$refs.paperReader.dispatch(data);
           })
         }
+      },
+      getSubject () {
+          let url = serverPath + '/subject/get/' + this.roomId;
+          axios.get(url,{withCredentials:true}).then((res, req) => {
+            console.log(res.data);
+            if (res.data.errcode === 0) {
+                this.hostData = res.data.des;
+            } else {
+              console.log('error');
+            }
+          });
+      },
+      setSubject () {
+        let url = serverPath + '/subject/set/' + this.roomId;
+        axios.get(url,{withCredentials:true}).then((res, req) => {
+          console.log(res.data);
+          if (res.data.errcode === 0) {
+            this.ownerData = res.data.des + ":" + res.data.ans;
+          } else {
+            console.log('error');
+          }
+        });
+      },
+      checkAns () {
+        let url = serverPath + '/subject/check/' + this.answer +"/" + this.roomId;
+        axios.get(url,{withCredentials:true}).then((res, req) => {
+          if (res.data.errcode === 0) {
+            this.socket.emit('checkmsg','success');
+            alert("答案正确");
+          } else {
+            alert("答案错误");
+          }
+        });
+      },
+      nextSub () {
+        let url = serverPath + '/subject/set/' + this.roomId;
+        axios.get(url,{withCredentials:true}).then((res, req) => {
+          console.log(res.data);
+          if (res.data.errcode === 0) {
+            this.ownerData = res.data.des + ":" + res.data.ans;
+          } else {
+            console.log('error');
+          }
+        });
       }
     },
     components:{
@@ -576,10 +634,49 @@
         }
       }
     }
-    .footer{
+  }
+  .footer{
       height: 50px;
       width: 100%;
-      background-color: red;
+      .ownerSub {
+        height: 40px;
+        width: 30%;
+        margin: 0 auto;
+        span{
+          font-size: 16px;
+          width: 20px;
+          line-height: 20px;
+        }
+        input[type="button"]{
+          color: #000;
+          border: 1px solid #000;
+          border-radius: 6px;
+          width: 50px;
+          height: 30px;
+          float: right;
+        }
+      }
+       .hostSub{
+         height: 40px;
+        width: 30%;
+        margin: 0 auto;
+        span{
+          font-size: 16px;
+          width: 20px;
+          line-height: 20px;
+        }
+        input[type="button"]{
+          color: #000;
+          border: 1px solid #000;
+          border-radius: 6px;
+          width: 50px;
+          height: 30px;
+          float: right;
+        }
+        input[type="text"]{
+          color: #000;
+          border: 1px solid #000;
+        }
+       }
     }
-  }
 </style>

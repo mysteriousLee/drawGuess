@@ -11,7 +11,7 @@
     </header>
     <section class="roomlist__container">
       <ul class="roomlist">
-        <li class="roomlist__elem locked" v-for="room in roomList" @click.stop="enterRoom(room.token)">
+        <li class="roomlist__elem locked" v-for="room in roomList" @click.stop="enterRoom(room.token,room.id)">
           <div class="roomlist__elem--logo">
             <img class="room" src="./room.png">
           </div>
@@ -55,14 +55,15 @@
       changeToken (newValue) {
         this.$store.commit(type.CHANGE_TOKEN, newValue);
       },
-      enterRoom (token) {
+      enterRoom (token,id) {
         let url = serverPath + '/websocket/connect/' + token;
         //let url = 'http://localhost:8000' + '/websocket/connect/' + token;
         this.changeId('host');
         axios.get(url,{withCredentials:true}).then((res, req) => {
           console.log(res.data);
           if (res.data.errcode === 0) {
-            this.$router.push({path: '/show-page'})
+            //console.log(id);
+            this.$router.push({path: '/show-page',query: { id: id }});
           } else {
             console.log('error');
           }
@@ -75,12 +76,13 @@
         axios.get(url, {
           withCredentials: true
         }).then((res) => {
-          console.log(res.data);
+          //console.log(res.data);
           res = res.data;
           if (res.errcode === 0) {
             console.log('lalala');
             this.changeToken(res.token);
-            this.$router.push({path: '/show-page'});
+            //console.log(this.roomList.length + 1);
+            this.$router.push({path: '/show-page',query: { id: this.roomList.length + 1 }});
           } 
         }).catch((error) => {
             console.log(error.config);

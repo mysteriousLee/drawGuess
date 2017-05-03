@@ -2,7 +2,7 @@ import Express from 'express'
 import create from './api/token'
 import connect from './api/websocket'
 import getRooms from './api/getrooms'
-import { getData,judgeAns } from './api/get'
+import { setData,getData,checkData } from './api/subject'
 
 let router = Express.Router();
 
@@ -12,8 +12,10 @@ router.get('/token/create', create);
 router.get('/websocket/connect/:token', connect);
 // 获取房间列表
 router.get('/websocket/getrooms', getRooms);
- //获取答案,提示词
-router.get('/get/getData', getData);
-//观察者输入答案
-router.get('/get/judgeAns/:ans', judgeAns);
+ //设置答案,提示词
+router.get('/subject/set/:id', setData);
+//观察者获取提示词
+router.get('/subject/get/:id', getData);
+//检查答案
+router.get('/subject/check/:answer/:id', checkData);
 export default router;
