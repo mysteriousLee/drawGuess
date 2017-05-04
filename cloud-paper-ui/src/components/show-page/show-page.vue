@@ -4,11 +4,21 @@
       <header class="header">
         <div class="header__warp">
           <span>
-            <router-link to="/index-page">☁️云纸条</router-link>
+            <router-link to="/index-page">☁你画我猜</router-link>
           </span>
           <span class="header__warp--living">房间正在直播中</span>
         </div>
       </header>
+      <footer class="guessBar">
+        <div class="ownerSub" v-if="this.id==='owner'">
+          <span v-text="ownerData"></span>
+        </div>
+        <div class="hostSub" v-else>
+          <span v-text="hostData"></span>
+          <input type="text" placeholder="请输入答案" v-model="answer">
+          <input type="button" name="" value="发送" v-on:click="checkAns">
+        </div>
+      </footer>
       <section class="paint" id="paint" ref="paint">
         <div class="paint__tools--cursor">
           <img src="./pointPencil.png"  ref="cursorPencil">
@@ -19,7 +29,7 @@
             <paper-writter v-if="this.id==='owner'"
                            ref="paperWritter"
                            :width="1024"
-                           :height="670"
+                           :height="500"
                            :type="drawType"
                            :pencilSize="pencilSize"
                            :eraserSize="eraserSize"
@@ -29,7 +39,7 @@
             <paper-reader v-if="this.id==='host'"
                           ref="paperReader"
                           :width="1024"
-                          :height="670"
+                          :height="500"
             ></paper-reader>
           </section>
         </div>
@@ -61,17 +71,6 @@
         </aside>
       </section>
     </main>
-    <footer class="footer">
-      <div class="ownerSub" v-if="this.id==='owner'">
-        <span v-text="ownerData"></span>
-        <input type="button" name="" value="下一题" v-on:click="nextSub">
-      </div>
-      <div class="hostSub" v-else>
-        <span v-text="hostData"></span>
-        <input type="text" placeholder="请输入答案" v-model="answer">
-        <input type="button" name="" value="发送" v-on:click="checkAns">
-      </div>
-    </footer>
   </div>
 </template>
 <script>
@@ -211,7 +210,7 @@
         if (this.widthDiff < 0) {
           this.widthDiff = 0;
         }
-        let topX = event.clientY - 70;
+        let topX = event.clientY - 136;
         let leftX = event.clientX - this.widthDiff;
         if (this.drawType == 'pen' && this.id !== 'host') {
           let penHeight = this.$refs['cursorPencil'].height;
@@ -247,7 +246,12 @@
           //如果是房主就申请题目放到global.data里并且返回题目
           this.setSubject();
           socket.on('checkmsg', (data) => {
-            console.log(data);
+            if (data === 'success') {
+              console.log('对方答对了！');
+              this.setSubject();
+            } else{
+              console.log('对方答错了！');
+            }
           });
         } else if (this.id === 'host') {
           this.getSubject();
@@ -286,24 +290,29 @@
         axios.get(url,{withCredentials:true}).then((res, req) => {
           if (res.data.errcode === 0) {
             this.socket.emit('checkmsg',{'msg': 'success','token': document.cookie});
-            alert("答案正确");
+            setTimeout(() => {
+              this.getSubject();
+            },200); 
+            this.answer = '';
+            console.log("答案正确");          
           } else {
             this.socket.emit('checkmsg',{'msg': 'error','token': document.cookie});
-            alert("答案错误");
-          }
-        });
-      },
-      nextSub () {
-        let url = serverPath + '/subject/set/' + this.roomId;
-        axios.get(url,{withCredentials:true}).then((res, req) => {
-          console.log(res.data);
-          if (res.data.errcode === 0) {
-            this.ownerData = res.data.des + ":" + res.data.ans;
-          } else {
-            console.log('error');
+            console.log("答案错误");
+            this.answer = '';
           }
         });
       }
+      // nextSub () {
+      //   let url = serverPath + '/subject/set/' + this.roomId;
+      //   axios.get(url,{withCredentials:true}).then((res, req) => {
+      //     console.log(res.data);
+      //     if (res.data.errcode === 0) {
+      //       this.ownerData = res.data.des + ":" + res.data.ans;
+      //     } else {
+      //       console.log('error');
+      //     }
+      //   });
+      // }
     },
     components:{
       'paper-reader':PaperReader,
@@ -410,12 +419,7 @@
           height: 200px
           width: 400px
           transform-origin 400px 0
-          animation show .5s /**
-          说明：
-            未知原因，入场动画使用vue渲染会卡顿
-          解决办法：
-            入场动画使用animation
-           */
+          animation show .5s 
           @keyframes show
             0%
               transform scale(0)
@@ -467,10 +471,11 @@
       .paint
         width: 1024px
         height 100%
-        margin 0 auto
+        margin 16px auto
         display: block
         position relative
-        box-shadow: 0 0 10px rgba(204, 204, 204, 0.5)
+        border-radius: 10px;
+        box-shadow: 0 0 15px #ccc
         .paint-board
           cursor: none
           .read, .write
@@ -524,7 +529,6 @@
     .paint {
       .paint__tools--cursor {
         position: relative;
-        cursor: none;
         img{
           position: absolute;
           top: 0;
@@ -639,47 +643,48 @@
       }
     }
   }
-  .footer{
+  .guessBar{
       height: 50px;
       width: 100%;
+      box-sizing: border-box;
       .ownerSub {
-        height: 40px;
-        width: 30%;
-        margin: 0 auto;
+        width: 100%;
+        position: relative;
         span{
-          font-size: 16px;
-          width: 20px;
-          line-height: 20px;
-        }
-        input[type="button"]{
-          color: #000;
-          border: 1px solid #000;
-          border-radius: 6px;
-          width: 50px;
-          height: 30px;
-          float: right;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%,50%);
+          font-size: 20px;
+          color: #D4AF7A;
+          font-weight: bold;
         }
       }
        .hostSub{
-         height: 40px;
-        width: 30%;
+        height: 100%;
+        width: 500px;
         margin: 0 auto;
         span{
-          font-size: 16px;
-          width: 20px;
-          line-height: 20px;
+          font-size: 20px;
+          color: #D4AF7A;
+          font-weight: bold;
         }
         input[type="button"]{
-          color: #000;
-          border: 1px solid #000;
+          color: #D4AF7A;
+          border: 1px solid #D4AF7A;
           border-radius: 6px;
           width: 50px;
           height: 30px;
-          float: right;
+        }
+        input[type="button"]:hover{
+          color: #fff;
+          background-color: #D4AF7A;
         }
         input[type="text"]{
           color: #000;
-          border: 1px solid #000;
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          height: 30px;
         }
        }
     }

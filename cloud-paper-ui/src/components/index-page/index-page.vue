@@ -2,10 +2,10 @@
   <main class="container" id="index__roomList" @mousemove="titleShadow">
     <header class="header__container">
       <section class="header__container--title" @mousemove="titleShadow">
-        <h1>☁️云纸条</h1>
+        <h1>☁你画我猜</h1>
       </section>
       <section class="button__container">
-        <p>快来创建房间和小伙伴一起分享演示吧!</p>
+        <p>快来创建房间和小伙伴一起游戏吧!</p>
         <button @click.stop="createRoom">创建房间</button>
       </section>
     </header>

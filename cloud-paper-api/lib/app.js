@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', router);
-
+//socket连接
 global.IO.on('connection', (socket) => {
         let token = cookie.parse(socket.request.headers.cookie).token;
         if(global.TOKENS.indexOf(token) !== -1){
