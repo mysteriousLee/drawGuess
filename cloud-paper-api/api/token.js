@@ -31,7 +31,7 @@ let create = (req, res) => {
                 historyData : []
     };
     global.ROOMS[token] = room;
-    connectWS();
+    //connectWS();
     return;
 };
 export default create;

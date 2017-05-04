@@ -111,7 +111,7 @@
             clearInterval(time);
             this.justify();
             this.initColorBoard();
-          }
+          } 
         }, 200)
       })
     },
@@ -239,13 +239,16 @@
       },
       // 判断房主还是宾客
       justify () {
-        let url = serverPath;
+        let url = serverPath;;
         //let url = "http://localhost:8000";
         let socket = io.connect(url);
         this.socket = socket;
         if (this.id === 'owner') {
           //如果是房主就申请题目放到global.data里并且返回题目
           this.setSubject();
+          socket.on('checkmsg', (data) => {
+            console.log(data);
+          });
         } else if (this.id === 'host') {
           this.getSubject();
           this.$refs['cursorEraser'].style.display = 'none';
@@ -282,9 +285,10 @@
         let url = serverPath + '/subject/check/' + this.answer +"/" + this.roomId;
         axios.get(url,{withCredentials:true}).then((res, req) => {
           if (res.data.errcode === 0) {
-            this.socket.emit('checkmsg','success');
+            this.socket.emit('checkmsg',{'msg': 'success','token': document.cookie});
             alert("答案正确");
           } else {
+            this.socket.emit('checkmsg',{'msg': 'error','token': document.cookie});
             alert("答案错误");
           }
         });

@@ -79,7 +79,6 @@
           //console.log(res.data);
           res = res.data;
           if (res.errcode === 0) {
-            console.log('lalala');
             this.changeToken(res.token);
             //console.log(this.roomList.length + 1);
             this.$router.push({path: '/show-page',query: { id: this.roomList.length + 1 }});
