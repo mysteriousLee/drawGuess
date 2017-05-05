@@ -247,10 +247,10 @@
           this.setSubject();
           socket.on('checkmsg', (data) => {
             if (data === 'success') {
-              console.log('对方答对了！');
+              console.log('有人答对了！');
               this.setSubject();
             } else{
-              console.log('对方答错了！');
+              console.log('有人答错了！');
             }
           });
         } else if (this.id === 'host') {
@@ -260,6 +260,13 @@
           let that = this;
           socket.on('message', (data) => {
             that.$refs.paperReader.dispatch(data);
+          });
+          socket.on('checkmsg', (data) => {
+            if(data === 'success') {
+              setTimeout(() => {
+                this.getSubject();
+              },200);
+            }
           })
         }
       },
@@ -290,14 +297,11 @@
         axios.get(url,{withCredentials:true}).then((res, req) => {
           if (res.data.errcode === 0) {
             this.socket.emit('checkmsg',{'msg': 'success','token': document.cookie});
-            setTimeout(() => {
-              this.getSubject();
-            },200); 
             this.answer = '';
-            console.log("答案正确");          
+            console.log("你答对了哦");          
           } else {
             this.socket.emit('checkmsg',{'msg': 'error','token': document.cookie});
-            console.log("答案错误");
+            console.log("你答错了哦");
             this.answer = '';
           }
         });

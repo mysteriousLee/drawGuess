@@ -77,6 +77,9 @@ global.IO.on('connection', (socket) => {
                 let tokenData = data.token.split('=')[1];
                 let connectHost = global.ROOMS[tokenData].connectPool[0];
                 connectHost.emit('checkmsg',data.msg);
+                for(let link of global.ROOMS[tokenData].connectPool.slice(1)){
+                        link.emit('checkmsg',data.msg);
+                };
             });
         }
      });
