@@ -3,7 +3,7 @@ import sio from 'socket.io'
 import cookieParser from 'cookie-parser'
 import cookie from 'cookie'
 import router from '../api_router'
-
+import globalData from '../overallData'
 
 let app = Express();
 let server = app.listen(8000, () => {
@@ -11,19 +11,7 @@ let server = app.listen(8000, () => {
 });
 
 global.IO = require('socket.io')(server);
-//全局变量 房间序号
-global.ROOM_ID = 1;
-// 全局变量 房间信息
-global.ROOMS = [];
-// 全局变量 房间token
-global.TOKENS = [];
-// 当 http server 接收到 websocket 时就将请求转给 socket.io 处理
-global.DATA = {};
-/*
-    DATA是一个全局数组，保存着对应房间序号的流动题目，在创建房间时向showpage页面传递房间序号
-    在showpage页面中如果是host就给对应元素更新题目，然后返回答案，如果不是host就请求对应的描述
-    所有流动题目均保存在data里
- */
+
 app.use(cookieParser());
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', req.headers.origin);
@@ -45,11 +33,11 @@ app.use('/', router);
 //socket连接
 global.IO.on('connection', (socket) => {
         let token = cookie.parse(socket.request.headers.cookie).token;
-        if(global.TOKENS.indexOf(token) !== -1){
+        if(globalData.TOKENS.indexOf(token) !== -1){
             
-            let room = global.ROOMS[token];
+            let room = globalData.ROOMS[token];
             // 销毁申请的token
-            global.TOKENS.splice(global.TOKENS.indexOf(token),1);
+            globalData.TOKENS.splice(globalData.TOKENS.indexOf(token),1);
             console.log('create room');
             room.connectPool.push(socket);
             socket.on('message', (data) => {
@@ -62,7 +50,7 @@ global.IO.on('connection', (socket) => {
         }
          else {
             let token = cookie.parse(socket.request.headers.cookie).token;
-            let room = global.ROOMS[token];
+            let room = globalData.ROOMS[token];
             // 观众连接
             console.log('add connect pool ' + token);
             room.connectPool.push(socket);
@@ -75,9 +63,9 @@ global.IO.on('connection', (socket) => {
             }
             socket.on('checkmsg', (data) => {
                 let tokenData = data.token.split('=')[1];
-                let connectHost = global.ROOMS[tokenData].connectPool[0];
+                let connectHost = globalData.ROOMS[tokenData].connectPool[0];
                 connectHost.emit('checkmsg',data.msg);
-                for(let link of global.ROOMS[tokenData].connectPool.slice(1)){
+                for(let link of globalData.ROOMS[tokenData].connectPool.slice(1)){
                         link.emit('checkmsg',data.msg);
                 };
             });
