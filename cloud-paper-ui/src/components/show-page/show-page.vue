@@ -28,8 +28,8 @@
           <section @mousemove.stop="mouseFollow">
             <paper-writter v-if="this.id==='owner'"
                            ref="paperWritter"
-                           :width="1024"
-                           :height="500"
+                           :width="paperWidth"
+                           :height="paperHeight"
                            :type="drawType"
                            :pencilSize="pencilSize"
                            :eraserSize="eraserSize"
@@ -38,8 +38,8 @@
             ></paper-writter>
             <paper-reader v-if="this.id==='host'"
                           ref="paperReader"
-                          :width="1024"
-                          :height="500"
+                          :width="paperWidth"
+                          :height="paperHeight"
             ></paper-reader>
           </section>
         </div>
@@ -98,11 +98,13 @@
         roomId: 0,
         ownerData: '',
         hostData: '',
-        answer: ''
+        answer: '',
+        paperHeight: 0,
+        paperWidth: 0
       }
     },
     mounted () {
-      this.roomId = this.$route.query.id;
+      this.roomId = this.$route.query.id;this.initPaperBoard();
       this.$nextTick(() => {
         // 等待vuex数据更新
         let time = setInterval(() => {
@@ -160,6 +162,13 @@
           });
         }
       },
+      initPaperBoard () {
+        let screenHeight = window.innerHeight;
+        let screenWidth = window.innerWidth;
+        console.log(screenWidth);
+        this.paperHeight = 0.8 * screenHeight;
+        this.paperWidth = 0.9 * screenWidth;
+      },
       // 调整画笔和橡皮大小事件
       adjust (event, name) {
         let elt = event.target;
@@ -210,7 +219,7 @@
         if (this.widthDiff < 0) {
           this.widthDiff = 0;
         }
-        let topX = event.clientY - 136;
+        let topX = event.clientY - 125;
         let leftX = event.clientX - this.widthDiff;
         if (this.drawType == 'pen' && this.id !== 'host') {
           let penHeight = this.$refs['cursorPencil'].height;
@@ -473,12 +482,11 @@
           width: 50%
           box-sizing border-box
       .paint
-        width: 1024px
-        height 100%
-        margin 16px auto
+        margin 5px auto
         display: block
         position relative
         border-radius: 10px;
+
         box-shadow: 0 0 15px #ccc
         .paint-board
           cursor: none
@@ -658,6 +666,8 @@
           position: absolute;
           left: 50%;
           top: 50%;
+          width: 100%;
+          text-align: center;
           transform: translate(-50%,50%);
           font-size: 20px;
           color: #D4AF7A;

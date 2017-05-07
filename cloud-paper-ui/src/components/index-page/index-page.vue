@@ -1,8 +1,8 @@
 <template>
-  <main class="container" id="index__roomList" @mousemove="titleShadow">
+  <main class="container" id="index__roomList">
     <header class="header__container">
-      <section class="header__container--title" @mousemove="titleShadow">
-        <h1>☁你画我猜</h1>
+      <section class="header__container--title">
+        <p>☁你画我猜</p>
       </section>
       <section class="button__container">
         <p>快来创建房间和小伙伴一起游戏吧!</p>
@@ -86,26 +86,6 @@
         }).catch((error) => {
             console.log(error.config);
         })
-      },
-      titleShadow (event) {
-        const title = document.querySelector('.container#index__roomList .header__container--title');
-        const text = title.querySelector('h1');
-        const walk = 60;
-        const {
-          offsetWidth: width,
-          offsetHeight: height
-        } = title;
-        let {
-          offsetX: x,
-          offsetY: y
-        } = event;
-        if (this !== event.target) {
-          x = x + event.target.offsetLeft;
-          y = y + event.target.offsetTop;
-        }
-        const xWalk = Math.round((x / width * walk) - (walk / 2));
-        const yWalk = Math.round((y / height * walk) - (walk / 2));
-        text.style.textShadow = `${yWalk}px ${xWalk * -1}px 10px rgba(204,204,204,0.4)`;
       }
     }
   }
@@ -227,7 +207,7 @@
     z-index: 3;
   }
 
-  .container#index__roomList .header__container .header__container--title h1 {
+  .container#index__roomList .header__container .header__container--title p {
     margin: 0;
     position: relative;
     top: 50%;
@@ -235,7 +215,7 @@
     transform: translate3d(-50%, -50%, 0);
     color: #e7e7e7;
     z-index: 2;
-    font-size: 5em;
+    font-size: 3.6rem;
     letter-spacing: .3em;
     text-shadow: 10px 10px 10px rgba(255, 255, 255, 0.4);
   }
