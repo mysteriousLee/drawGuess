@@ -1,8 +1,8 @@
 {
-  "name": "cloud-paper-ui",
+  "name": "drawGuess",
   "version": "1.0.0",
-  "description": "cloud-paper-ui",
-  "author": "small sun",
+  "description": "drawGuess",
+  "author": "lilu",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",

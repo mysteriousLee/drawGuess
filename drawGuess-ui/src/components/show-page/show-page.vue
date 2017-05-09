@@ -228,7 +228,6 @@
       // 判断房主还是宾客
       justify () {
         let url = serverPath;;
-        //let url = "http://localhost:8000";
         let socket = io.connect(url);
         this.socket = socket;
         if (this.id === 'owner') {

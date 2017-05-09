@@ -7,3 +7,9 @@
 * websocket + canvas -> 核心技术
 ### 后台：
 * node + express -> 服务器的构建
+
+## 运行
+### 前端部分参照ui中的README，后台部分直接npm start
+
+## 说明
+### 依赖包就不删了，因为装一下麻烦的很，有兴趣的直接clone下来就能跑啦

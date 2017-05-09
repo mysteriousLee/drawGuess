@@ -43,6 +43,7 @@ global.IO.on('connection', (socket) => {
             socket.on('message', (data) => {
                     //console.log('emit event message, token is ' + token);
                     room.historyData.push(data);
+                    //console.log(data);
                     for(let link of room.connectPool.slice(1)){
                         link.emit('message',data);
                     };
