@@ -13,3 +13,6 @@
 
 ## 说明
 ### 依赖包就不删了，因为装一下麻烦的很，有兴趣的直接clone下来就能跑啦
+
+## 写了一个博客记录实现的过程，详情请点击：
+http://blog.csdn.net/shenmill/article/details/71440823
